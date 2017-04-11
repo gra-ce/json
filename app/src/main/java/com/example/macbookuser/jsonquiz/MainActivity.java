@@ -23,21 +23,22 @@ import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String[] urls;
+
     private String[] color;
     private String[] habitat;
     private String[] bodyShape;
     private String[] pokemonFigures;
     private String[] powers;
     private String[] questions;
-    private String[] answerChoices;
+    private String[] answerChoices = new String[4];
 
-    private TextView question;
+
+    private TextView questionTextView;
     private Button optA, optB, optC, optD, next;
-    private String correctAnswerUrl, correctAnswer, pokemon;
+    public String correctAnswerUrl, correctAnswer, pokemon, baseUrl;
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    private int questionIndex, speciesIndex;
+    public int questionIndex, speciesIndex, value;
 
     Animation anim1, anim2;
 
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         setAnswerChoices();
 
 
@@ -75,8 +77,15 @@ public class MainActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                next.startAnimation(anim2);
                 setAnswerChoices();
                 generateRandomAnswers();
+                optA.setBackgroundColor(Color.TRANSPARENT);
+                optB.setBackgroundColor(Color.TRANSPARENT);
+                optC.setBackgroundColor(Color.TRANSPARENT);
+                optD.setBackgroundColor(Color.TRANSPARENT);
+
+
             }
         });
 
@@ -145,38 +154,36 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setArrays() {
-        String [] color = new String [] {
+        color = new String [] {
                 "Black", "White","Red", "Orange", "Yellow", "Green",
                 "Blue", "Indigo", "Violet", "Gray"
         };
 
-        String [] habitat = new String []{
+        habitat = new String []{
                 "Grassland", "Forest", "Water's-edge", "Sea", "Cave",
                 "Mountain", "Rough-terrain", "Urban", "Rare"
         };
 
-        String[] bodyShape = new String[]{
+        bodyShape = new String[]{
                 "Quadruped", "Wings", "Squiggle", "Upright"
         };
 
-        String[] pokemonFigures = new String[]{
+        pokemonFigures = new String[]{
                 "Bulbasaur", "Charmander", "Squirtle", "Caterpie", "Weedle",
                 "Pidgey", "Rattata", "Spearow", "Ekans", "Sandshrew",
                 "Nidoran-F","Nidoran-M", "Vulpix", "Zubat"};
 
-        String[] powers = new String[]{
+        powers = new String[]{
                 "Stench", "Fire",
         };
 
-        String[] questions = new String[] {
-                "What color is " + pokemon + "?",
-                "What habitat does this Pokemon live in?",
-                "What shape is this Pokemon?",
-                "What is one ability this Pokemon has?",
-                "Which Pokemon is this color?",
-                "Which Pokemon has this ability?",
-                "What does this power do?",
-                "What power does this describe?" };
+        questions = new String[] {
+                "What color is ",
+                "What habitat is inhabited by ",
+                "What shape is ",
+                "What ability belongs to ",
+
+        };
     }
 
 
@@ -190,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void wireWidgets() {
-        question = (TextView) findViewById(R.id.textView_question);
+        questionTextView = (TextView) findViewById(R.id.textView_question);
         optA = (Button) findViewById(R.id.button_opt_A);
         optB = (Button) findViewById(R.id.button_opt_B);
         optC = (Button) findViewById(R.id.button_opt_C);
@@ -204,25 +211,30 @@ public class MainActivity extends AppCompatActivity {
     private void fillArrayWithUrls() {
         switch(questionIndex){
             case 0:
-                int value = (int) Math.random()*5;
-                String baseUrl = "";
-                if(value ==1) {
+               value = (int) (Math.random()*4);
+
+                if(value ==0) {
                     baseUrl = "https://pokeapi.co/api/v2/generation/1/";
+                    Log.d(TAG, baseUrl);
+                    new SwPersonSearch().execute(baseUrl);
+
+                }
+                if(value ==1) {
+                    baseUrl = "https://pokeapi.co/api/v2/generation/2/";
+                    new SwPersonSearch().execute(baseUrl);
 
                 }
                 if(value ==2) {
-                    baseUrl = "https://pokeapi.co/api/v2/generation/2/";
+                    baseUrl = "https://pokeapi.co/api/v2/generation/3/";
+                    new SwPersonSearch().execute(baseUrl);
 
                 }
                 if(value ==3) {
-                    baseUrl = "https://pokeapi.co/api/v2/generation/3/";
-
-                }
-                if(value ==4) {
                     baseUrl = "https://pokeapi.co/api/v2/generation/4/";
+                    new SwPersonSearch().execute(baseUrl);
 
                 }
-                new SwPersonSearch().execute(baseUrl);
+
                 break;
             case 1:
                 baseUrl = "https://pokeapi.co/api/v2/generation/2/";
@@ -250,43 +262,47 @@ public class MainActivity extends AppCompatActivity {
         switch(questionIndex){
             case 0:
                 for(int i=0; i<4; i++) {
-                    int x = (int) Math.random() * color.length;
-                    Log.d(x+"", "FAIL");
-                    answerChoices[i] = color[x];
-                    questionIndex++;
+                    int x = (int) (Math.random() * color.length);
+                    for(int z=0; z<i; z++){
+                        if(color[x]!= answerChoices[z] ) {
+                            answerChoices[i] = color[x];
+                            questionIndex++;
+                        }
+                    }
+
                 }
                 break;
             case 1:
                 for(int i=0; i<4; i++) {
-                    int x = (int) Math.random() * habitat.length;
+                    int x = (int) (Math.random() * habitat.length);
                     answerChoices[i] = habitat[x];
                     questionIndex++;
                 }
                 break;
             case 2:
                 for(int i=0; i<4; i++) {
-                    int x = (int) Math.random() * bodyShape.length;
+                    int x = (int) (Math.random() * bodyShape.length);
                     answerChoices[i] = bodyShape[x];
                     questionIndex++;
                 }
                 break;
             case 3:
                 for(int i=0; i<4; i++) {
-                    int x = (int) Math.random() * powers.length;
+                    int x = (int) (Math.random() * powers.length);
                     answerChoices[i] = powers[x];
                     questionIndex++;
                 }
                 break;
             case 4:
                 for(int i=0; i<4; i++) {
-                    int x = (int) Math.random() * pokemonFigures.length + 1;
+                    int x = (int) (Math.random() * pokemonFigures.length + 1);
                     answerChoices[i] = pokemonFigures[x];
                     questionIndex++;
                 }
                 break;
             default:
                 for(int i=0; i<4; i++) {
-                    int x = (int) Math.random() * color.length + 1;
+                    int x = (int) (Math.random() * color.length + 1);
                     answerChoices[i] = color[x];
                     questionIndex++;
                 }
@@ -339,12 +355,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (jsonData != null) {
-                speciesIndex = (int) Math.random() * jsonData.optJSONArray("pokemon_species").length() + 1;
+                speciesIndex = (int)( Math.random() * jsonData.optJSONArray("pokemon_species").length());
                 correctAnswerUrl = jsonData.optJSONArray("pokemon_species").optJSONObject(speciesIndex).optString("url");
+                pokemon = jsonData.optJSONArray("pokemon_species").optJSONObject(speciesIndex).optString("name", "FAILURE");
 
-                Log.d(TAG, "onCreate: " + jsonData.optJSONArray("results").optJSONObject(0).optString("name", "FAIL"));
-                pokemon = jsonData.optJSONArray("pokemon_species").optJSONObject(speciesIndex).optString("name", "FAIL");
-                setCorrectAnswer(correctAnswerUrl);
+                Log.d(TAG, jsonData.toString());
+
 
 
             }
@@ -352,9 +368,22 @@ public class MainActivity extends AppCompatActivity {
 
             return pokemon;
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.d(s, "FAILURE");
+            if(s!=null){
+                String x = questions[questionIndex] + s + "?";
+                questionTextView.setText(x);
+                setCorrectAnswer(correctAnswerUrl);
+            }
+        }
     }
 
-        private class SwPersonSearch1 extends AsyncTask<String, Void, String> {
+
+
+    private class SwPersonSearch1 extends AsyncTask<String, Void, String> {
             String jsonString = "";
 
             @Override
@@ -399,23 +428,31 @@ public class MainActivity extends AppCompatActivity {
 
                 return correctAnswer;
             }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s!=null){
+                int answerIndex = (int)(Math.random()*4);
+                if(answerIndex==0){
+                    optA.setText(s);
+                }
+                if(answerIndex==1){
+                    optB.setText(s);
+                }
+                if(answerIndex==2){
+                    optC.setText(s);
+                }
+                if(answerIndex==3){
+                    optD.setText(s);
+                }
+            }
+        }
     }
 
     private void setCorrectAnswer(String correctAnswerUrl) {
         new SwPersonSearch1().execute(correctAnswerUrl);
-        int answerIndex = (int)Math.random()*4;
-        if(answerIndex==0){
-            optA.setText(correctAnswer);
-        }
-        if(answerIndex==1){
-            optB.setText(correctAnswer);
-        }
-        if(answerIndex==2){
-            optC.setText(correctAnswer);
-        }
-        if(answerIndex==3){
-            optD.setText(correctAnswer);
-        }
+
 
     }
 
