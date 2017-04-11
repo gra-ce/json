@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 if (optA.getText() == correctAnswer) {
                     Toast.makeText(MainActivity.this, "You're correct!", Toast.LENGTH_SHORT).show();
                     optA.setBackgroundColor(Color.GREEN);
-                    next.startAnimation(anim2);
+
                 } else {
                     Toast.makeText(MainActivity.this, "Try again", Toast.LENGTH_SHORT).show();
                     optA.setBackgroundColor(Color.RED);
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     if(optB.getText()==correctAnswer){
                         Toast.makeText(MainActivity.this, "You're correct!", Toast.LENGTH_SHORT).show();
                         optB.setBackgroundColor(Color.GREEN);
-                        next.startAnimation(anim2);
+
                     }
                     else{
                         Toast.makeText(MainActivity.this, "Try again", Toast.LENGTH_SHORT).show();
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                         if(optC.getText()==correctAnswer){
                             Toast.makeText(MainActivity.this, "You're correct!", Toast.LENGTH_SHORT).show();
                             optC.setBackgroundColor(Color.GREEN);
-                            next.startAnimation(anim2);
+
                         }
                         else{
                             Toast.makeText(MainActivity.this, "Try again", Toast.LENGTH_SHORT).show();
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 if(optD.getText()==correctAnswer){
                     Toast.makeText(MainActivity.this, "You're correct!", Toast.LENGTH_SHORT).show();
                     optD.setBackgroundColor(Color.GREEN);
-                    next.startAnimation(anim2);
+
                 }
                 else{
                     Toast.makeText(MainActivity.this, "Try again", Toast.LENGTH_SHORT).show();
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 "Nidoran-F","Nidoran-M", "Vulpix", "Zubat"};
 
         powers = new String[]{
-                "Stench", "Fire",
+                "Stench", "Fire"
         };
 
         questions = new String[] {
@@ -261,52 +261,94 @@ public class MainActivity extends AppCompatActivity {
     private void generateRandomAnswers() {
         switch(questionIndex){
             case 0:
+                int count =0;
                 for(int i=0; i<4; i++) {
                     int x = (int) (Math.random() * color.length);
                     for(int z=0; z<i; z++){
                         if(color[x]!= answerChoices[z] ) {
+                            count++;
+
+                        }
+                        if(count==4){
                             answerChoices[i] = color[x];
                             questionIndex++;
                         }
+
                     }
 
                 }
                 break;
             case 1:
+                int count1 =0;
                 for(int i=0; i<4; i++) {
                     int x = (int) (Math.random() * habitat.length);
-                    answerChoices[i] = habitat[x];
-                    questionIndex++;
+                    for(int z=0; z<i; z++){
+                        if(habitat[x]!= answerChoices[z] ) {
+                            count1++;
+
+                        }
+                        if(count1==4){
+                            answerChoices[i] = color[x];
+                            questionIndex++;
+                        }
+
+                    }
+
                 }
-                break;
             case 2:
+                int count2 =0;
                 for(int i=0; i<4; i++) {
                     int x = (int) (Math.random() * bodyShape.length);
-                    answerChoices[i] = bodyShape[x];
-                    questionIndex++;
+                    for(int z=0; z<i; z++){
+                        if(bodyShape[x]!= answerChoices[z] ) {
+                            count2++;
+
+                        }
+                        if(count2==4){
+                            answerChoices[i] = color[x];
+                            questionIndex++;
+                        }
+
+                    }
+
                 }
-                break;
             case 3:
+                int count3 =0;
                 for(int i=0; i<4; i++) {
-                    int x = (int) (Math.random() * powers.length);
-                    answerChoices[i] = powers[x];
-                    questionIndex++;
+                    int x = (int) (Math.random() * pokemonFigures.length);
+                    for(int z=0; z<i; z++){
+                        if(pokemonFigures[x]!= answerChoices[z] ) {
+                            count3++;
+
+                        }
+                        if(count3==4){
+                            answerChoices[i] = color[x];
+                            questionIndex++;
+                        }
+
+                    }
+
+
                 }
                 break;
-            case 4:
-                for(int i=0; i<4; i++) {
-                    int x = (int) (Math.random() * pokemonFigures.length + 1);
-                    answerChoices[i] = pokemonFigures[x];
-                    questionIndex++;
-                }
-                break;
+
             default:
+                int count4 =0;
                 for(int i=0; i<4; i++) {
-                    int x = (int) (Math.random() * color.length + 1);
-                    answerChoices[i] = color[x];
-                    questionIndex++;
+                    int x = (int) (Math.random() * color.length);
+                    for(int z=0; z<i; z++){
+                        if(color[x]!= answerChoices[z] ) {
+                            count4++;
+
+                        }
+                        if(count4==4){
+                            answerChoices[i] = color[x];
+                            questionIndex++;
+                        }
+
+                    }
+
                 }
-                break;
 
 
 
